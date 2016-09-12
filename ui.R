@@ -119,7 +119,7 @@ ui <- (fluidPage(theme = shinytheme("Flatly"), navbarPage(p(strong("toxFlow"), s
                                                           
      #Tab4
      #tabPanel("Manual",(a("Manual",target="_blank",href="manual.pdf")))
-     tabPanel("Help",p("To open in new tab press", a("here",target="_blank",href="manual.pdf")),p("Address correspondence to: dimitraDOTvarsouATgmailDOTcom"),tags$iframe(src="manual.pdf", width="900", height="600"))
+     tabPanel("Help",p("To open in new tab press", a("here",target="_blank",href="manual.pdf")),p("Address correspondence to: dimitraDOTvarsouATgmailDOTcom"),p("Full code available on:", a("GitHub",target="_blank",href="https://github.com/DemetraDanae/toxFlow") ), tags$iframe(src="manual.pdf", width="900", height="600"))
               
 ),
 tags$footer(span(HTML('<footer>
