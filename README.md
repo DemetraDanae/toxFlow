@@ -12,6 +12,10 @@ doi: <a href="https://zenodo.org/badge/latestdoi/68043137"> <img src="https://ze
 #License
 This application is released under <a href="https://www.gnu.org/licenses/gpl.html"> GNU General Public License v.3</a>. 
 
+<textarea name="text" cols="25" rows="5">
+Add multiple lines of text here and watch the scrollbars grow...
+</textarea>
+
 <div style="background-color:powderblue">
   toxFlow GSVA-Read across web tools
     <p>Copyright (C) 2016  Dimitra Danai Varsou</p>
