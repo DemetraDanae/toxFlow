@@ -14,19 +14,19 @@ This application is released under <a href="https://www.gnu.org/licenses/gpl.htm
 
 <div class="boxed">
   toxFlow GSVA-Read across web tools
-    Copyright (C) 2016  Dimitra Danai Varsou
+    <p>Copyright (C) 2016  Dimitra Danai Varsou</p>
 
-    This program is free software: you can redistribute it and/or modify
+    <p>This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    (at your option) any later version.</p>
 
-    This program is distributed in the hope that it will be useful,
+    <p>This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <a href="http://www.gnu.org/licenses/"> here</a>.
+    <p>You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <a href="http://www.gnu.org/licenses/"> here</a>.</p>
 
-    toxFlow  Copyright (C) 2016  Dimitra Danai Varsou
+    <p>toxFlow  Copyright (C) 2016  Dimitra Danai Varsou</p>
  </div> 
