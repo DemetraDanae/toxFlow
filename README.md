@@ -26,7 +26,7 @@ This application is released under <a href="https://www.gnu.org/licenses/gpl.htm
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <a href="http://www.gnu.org/licenses/" here>.
+    along with this program.  If not, see <a href="http://www.gnu.org/licenses/"> here</a>.
 
     toxFlow  Copyright (C) 2016  Dimitra Danai Varsou
  </div> 
