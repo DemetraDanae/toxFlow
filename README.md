@@ -5,12 +5,12 @@ toxFlow is a Shiny application that was build under R version 3.2.3. In this rep
 
 toxFlow is an application of web tools for Gene Set Variation Analysis (GSVA) and toxicity prediction using read across technique. toxFlow is developed as a project for my Diploma Thesis, in School of Chemical Engineering (National Technical University of Athens, March-September 2016).
 
-This application is hosted in the server of Unit of Process Control & Informatics of School of Chemical Engineering (NTUA), in the following <a href="http://147.102.86.129:3838/" link>. 
+This application is hosted in the server of Unit of Process Control & Informatics of School of Chemical Engineering (NTUA), in the following <a href="http://147.102.86.129:3838/"> link </a>. 
 
 doi: <a href="https://zenodo.org/badge/latestdoi/68043137"> <img src="https://zenodo.org/badge/68043137.svg" alt="DOI"></a>
 
 #License
-This application is released under <a href="https://www.gnu.org/licenses/gpl.html" GNU General Public License v.3>. 
+This application is released under <a href="https://www.gnu.org/licenses/gpl.html"> GNU General Public License v.3</a>. 
 
 <div class="boxed">
   toxFlow GSVA-Read across web tools
