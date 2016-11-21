@@ -339,65 +339,6 @@ server <- function(input, output) {
     
     return(selData)}
   
-  #netplot<-function(ref,nano_ID,PhCh_th1,PhCh_th2,Bio_th1,Bio_th2,relDescr,relBio){
-  #  #Network diagram
-  #  selected<-nano_ID
-  #  range<-nrow(selected)
-  #  id<-c()
-  #  rel<-c()
-  #  for (i in seq(1,range)){
-  #    id[i]<-paste("s0", i, sep="")
-  #  }
-  #  nodes<-cbind.data.frame(id,selected[,1:2])
-  #  colnames(nodes)<-c("id","nano_number","nano_name")
-    
-  #  links<-data.frame(stringsAsFactors = TRUE)
-  #  for (i in seq(1,range)){
-  #    links[i,1]<-id[which(nodes$nano_number==ref)]
-  #    links[i,2]<-paste("s0", i, sep="")
-  #    links[i,3]<-"mention"   #type?
-  #    id_ref<-which(nodes$nano_number==ref)
-  #    NP<-nodes[i,2]
-  #    if (i==id_ref){ #color_of_nodes
-  #      links[i,4]<-"#FFA500" }
-  #    else if ((relDescr[ref,NP]<=PhCh_th2)&(relDescr[ref,NP]>PhCh_th1)&(relBio[ref,NP]<=Bio_th2)&(relBio[ref,NP]>Bio_th1)) {
-  #      links[i,4]<-"#00CDCD"
-  #    }
-  #    else if ((relDescr[ref,NP]>PhCh_th2)&(relBio[ref,NP]>Bio_th2)){
-  #      links[i,4]<-"#008B8B"
-  #    }
-  #    else{
-  #      links[i,4]<-"#00FFFF"
-  #    }
-      #if ((relDescr[ref,NP]<=PhCh_th2)&(relDescr[ref,NP]>PhCh_th1)&(relBio[ref,NP]<=Bio_th2)&(relBio[ref,NP]>Bio_th1)){
-      #links[i,5]<-1
-      # } else if ((relDescr[ref,NP]>PhCh_th2)&(relBio[ref,NP]>Bio_th2)){
-      #   links[i,5]<-2
-      #} else {
-      #   links[i,5]<-3
-      #}
-  #  }
-  #  colnames(links)<-c("from", "to", "type","color")#,"groups")
-    
-    #group1<-links[which(links[,5]==1),2]
-    #group2<-links[which(links[,5]==2),2]
-    #group3<-links[which(links[,5]==3),2]
-    
-  #  net <- graph.data.frame(links, nodes, directed=T)
-  #  net.bg <- barabasi.game(range)
-  #  l <- layout.circle(net.bg)
-  #  l <- layout.norm(l, ymin=-1, ymax=1, xmin=-1, xmax=1)
-    #net <- simplify(net, remove.multiple = F, remove.loops = T)
-    
-  #  E(net)$width <- 5^E(net)$weight
-    
-    #plot1<-plot(net, vertex.color=links$color, vertex.label=V(net)$nano_name, vertex.label.cex=0.7,vertex.label.dist =0,
-     #           vertex.size=20,vertex.frame.color="white",edge.color="white",vertex.label.family="Helvetica",vertex.label.color="black",edge.arrow.size=0.1,
-     #           edge.arrow.width=0.5,edge.label.cex=0.7,margin=0.005, main=paste(ref,nano_ID[ref,2]), margin=c(5,10,5,10))#,
-    #mark.groups=list(group1,group2,group3), mark.col=c("#C5E5E7","#ECD89A","#00CDCD"), mark.border=NA)
-    
-    #return(plot1)}
-  
   #For GSVA
   #import files
   rawData<-reactive({
