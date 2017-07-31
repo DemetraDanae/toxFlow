@@ -12,6 +12,7 @@ doi: <a href="https://zenodo.org/badge/latestdoi/68043137"> <img src="https://ze
 #License
 This application is released under <a href="https://www.gnu.org/licenses/gpl.html"> GNU General Public License v.3</a>. 
 
+<html>
 <div class="boxed", style="background-color:powderblue">
   toxFlow GSVA-Read across web tools
 
@@ -32,3 +33,4 @@ along with this program.  If not, see <a href="http://www.gnu.org/licenses/"> he
 toxFlow  Copyright (C) 2017  Dimitra Danai Varsou
 
 </div> 
+</html>
