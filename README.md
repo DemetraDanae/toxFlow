@@ -7,6 +7,8 @@ toxFlow is an application of web tools for Gene Set Variation Analysis (GSVA) an
 
 This application is hosted in the server of Unit of Process Control & Informatics of School of Chemical Engineering (NTUA), in the following <a href="http://147.102.86.129:3838/"> link </a>. 
 
+You can find a video tutorial on <a href="https://www.youtube.com/watch?v=kGp2PuTiDrg"> YouTube</a>
+
 doi: <a href="https://zenodo.org/badge/latestdoi/68043137"> <img src="https://zenodo.org/badge/68043137.svg" alt="DOI"></a>
 
 # License
