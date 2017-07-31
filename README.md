@@ -9,7 +9,7 @@ This application is hosted in the server of Unit of Process Control & Informatic
 
 You can find a video tutorial on <a href="https://www.youtube.com/watch?v=kGp2PuTiDrg"> YouTube</a>
 
-doi: <a href="https://zenodo.org/badge/latestdoi/68043137"> <img src="https://zenodo.org/badge/68043137.svg" alt="DOI"></a>
+doi: <a href="http://doi.org/10.5281/zenodo.836713"> <img src="https://zenodo.org/badge/836713.svg" alt="DOI"></a>
 
 # License
 This application is released under <a href="https://www.gnu.org/licenses/gpl.html"> GNU General Public License v.3</a>. 
