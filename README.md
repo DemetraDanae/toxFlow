@@ -14,6 +14,7 @@ This application is released under <a href="https://www.gnu.org/licenses/gpl.htm
 
 <div class="boxed", style="background-color:powderblue">
   toxFlow GSVA-Read across web tools
+ <html>
     <p>Copyright (C) 2017  Dimitra Danai Varsou</p>
 
     <p>This program is free software: you can redistribute it and/or modify
@@ -29,4 +30,5 @@ This application is released under <a href="https://www.gnu.org/licenses/gpl.htm
     along with this program.  If not, see <a href="http://www.gnu.org/licenses/"> here</a>.</p>
 
     <p>toxFlow  Copyright (C) 2017  Dimitra Danai Varsou</p>
+ </html>
  </div> 
