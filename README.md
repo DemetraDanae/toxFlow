@@ -9,28 +9,21 @@ This application is hosted in the server of Unit of Process Control & Informatic
 
 doi: <a href="https://zenodo.org/badge/latestdoi/68043137"> <img src="https://zenodo.org/badge/68043137.svg" alt="DOI"></a>
 
-#License
+# License
 This application is released under <a href="https://www.gnu.org/licenses/gpl.html"> GNU General Public License v.3</a>. 
 
-<html>
-<div class="boxed", style="background-color:powderblue">
+<div style="background-color:black;color:white;padding:20px;">
   toxFlow GSVA-Read across web tools
 
-Copyright (C) 2017  Dimitra Danai Varsou
+<p>Copyright (C) 2017  Dimitra Danai Varsou</p>
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <a href="http://www.gnu.org/licenses/"> here</a>.
+<p>You should have received a copy of the GNU General Public License along with this program.  If not, see <a href="http://www.gnu.org/licenses/"> here</a>.</p>
 
 toxFlow  Copyright (C) 2017  Dimitra Danai Varsou
 
 </div> 
-</html>
