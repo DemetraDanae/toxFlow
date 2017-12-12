@@ -82,11 +82,13 @@ relfun<-function(calc,X_sc){
     relX<-cos.sim(X_sc,n)
     rownames(relX)<-colnames(X_sc)
     colnames(relX)<-colnames(X_sc)
+    #relX_sc<-relX
   }else{
     #Calculating distance between nanoparticles
     X1<-t(X_sc)
     relX<-dist(X1, method = calc, diag = FALSE)
     relX<-as.matrix(relX)
+    relX<-1/(1+relX)
     }
   
   return(relX)
@@ -122,7 +124,7 @@ RAVfun<-function(RAcorrBase,selData,nano_ID){
   range<-nrow(selData)
   denom<-sum(selData[2:range,col]) #denominator
   for (i in 2:range){
-    RAV<-RAV+(selData[i,col]*nano_ID[selData$"nano_name"[i],3])/denom
+    RAV<-RAV+(selData[i,col]*nano_ID[selData[i,1],3])/denom
   }
   return(RAV)
 }
@@ -138,34 +140,19 @@ selData<-function(PhCh_th,Bio_th,calc,ref,relDescr,relBio,total,nano_ID){
   #Selection of neighboring data
   i<-2 #selData rows
   NP<-1 #Nanoparticle
-  if (calc=="cos"){
-    while (NP<=total){
-      if (NP!=ref){
-        if ((relDescr[NP,ref]>=PhCh_th)&(relBio[NP,ref]>=Bio_th)){  #Thresholds
-          selData[i,1]<-nano_ID[NP,1] #nano_number
-          selData[i,2]<-nano_ID[NP,2] 
-          selData[i,3]<-relDescr[NP,ref] #corr_factor
-          selData[i,4]<-relBio[NP,ref] #corr_factor (pcorona)
-          i<-i+1
-        }
+  while (NP<=total){
+    if (NP!=ref){
+      if ((relDescr[NP,ref]>=PhCh_th)&(relBio[NP,ref]>=Bio_th)){  #Thresholds
+        selData[i,1]<-nano_ID[NP,1] #nano_number
+        selData[i,2]<-nano_ID[NP,2] 
+        selData[i,3]<-relDescr[NP,ref] #corr_factor
+        selData[i,4]<-relBio[NP,ref] #corr_factor (pcorona)
+        i<-i+1
       }
-      NP<-NP+1
     }
-  } else if ((calc=="manhattan")|(calc=="euclidean")){
-    while (NP<=total) {
-      if (NP!=ref){
-        if ((relDescr[NP,ref]<=PhCh_th)&(relBio[NP,ref]<=Bio_th)){  #Thresholds
-          selData[i,1]<-nano_ID[NP,1] #nano_number
-          selData[i,2]<-nano_ID[NP,2] 
-          selData[i,3]<-relDescr[NP,ref] #corr_factor
-          selData[i,4]<-relBio[NP,ref] #corr_factor (pcorona)
-          i<-i+1
-        }
-      }
-      NP<-NP+1
-    }
+    NP<-NP+1
   }
-  
+
   colnames(selData)<-c("#","nano_name", "PhChem_corr","Bio_corr")
   
   return(selData)}
@@ -249,14 +236,15 @@ server <- function(input, output) {
   #import files
   rawData<-reactive({
     if (input$Files_gsva=="Files1"){
-      raw<-read.csv2("Pcorona_Data_gsva.csv",header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
+      raw<-read.csv2("bio_gsva.csv",header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
     }else{
-      raw<-read.csv2(input$rawData$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)}
+      raw<-read.csv2(input$rawData$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
+      raw<-t(raw)} #new format of files required
     raw})
   
   additionalInfo<-reactive({
     if (input$Files_gsva=="Files1"){
-      add<-read.csv2("Pcorona_Data_categories.csv",header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
+      add<-read.csv2("NP_classification.csv",header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
     }else{
       add<-read.csv2(input$classifData$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)}
     add
@@ -302,9 +290,10 @@ server <- function(input, output) {
     }
   })
   
- uniqueData<-reactive({
-    X1<-rawData()
-    X1})
+  #double values?
+  uniqueData<-reactive({
+        X1<-rawData()
+  X1})
   
   #Scaling?
   rawData_sc<- reactive({
@@ -409,6 +398,7 @@ server <- function(input, output) {
     X1<-sdsgenes <- apply(X(), 1, sd) #same as X_filt
     X1<- X()[-which(sdsgenes<=quantile(sdsgenes,0.25)),]
     
+    #set.seed(11293)
     min<-input$geneLimits1
     max<-input$geneLimits2
     gsva_score<-gsva(as.matrix(X1),geneSet,method="gsva",rnaseq=FALSE,abs.ranking=FALSE, min.sz=min,max.sz=max,no.bootstraps=input$boot,bootstrap.percent =.632,mx.diff=TRUE,verbose=TRUE)
@@ -495,7 +485,6 @@ server <- function(input, output) {
     DEproteins
   })
   
-  #output$prot<-renderText({DEproteins()})
   
   #Constructing final table_________________________________________________________
   
@@ -609,6 +598,7 @@ server <- function(input, output) {
     }
     final<-datatable(results_total, escape = FALSE)
     final 
+    #heat.map()
   })
   
   results.Text<-eventReactive(input$run_gsva,{"Differentially expressed gene sets"})
@@ -816,6 +806,7 @@ server <- function(input, output) {
            lwd = 5,
            cex=0.5 # line width
     )
+    #print(H)
     dev.off()
   })
   
@@ -861,6 +852,8 @@ server <- function(input, output) {
     dev.off()
   })
 
+  ############################################################################
+
 #Tab 2: Training Read Across
   
 #1. UI outputs____________________________________________
@@ -890,57 +883,24 @@ server <- function(input, output) {
   
   output$instr2_5<-renderText("Protein IDs not found in file of GSVAnalysis. Please import another file")
   
-  #Numeric inputs (Sliders)
-  output$slider_PhCh<-renderUI(
-    if(input$calc=="cos"){
-      numericInput("PhCh_th","Physicochemical threshold:",min=0,max=1,value=0.5,step=0.01)
-    } else{
-      numericInput("PhCh_th","Physicochemical threshold:",min=1,max=NA,value=1,step=0.1)
-    }
-  )
-  
-  output$slider_Bio<-renderUI(
-    if(input$calc=="cos"){
-      numericInput("Bio_th","Biological threshold:",min=0,max=1,value=0.5,step=0.01)
-    } else{
-      numericInput("Bio_th","Biological threshold:",min=0,max=NA,value=1,step=0.1)
-    }
-  )
-  
   #Physicochemical threshold 1 for netplots
   output$slider_PhChplot1<-renderUI(
-    if(input$calc=="cos"){
-      numericInput("PhCh_th1_1"," ",min=0,max=1,value=0.1,step=0.01)
-    } else{
-      numericInput("PhCh_th1_1"," ",min=0,max=NA,value=3,step=0.1)
-    }
+    numericInput("PhCh_th1_1"," ",min=0,max=1,value=0.1,step=0.01)
   )
   
   #Physicochemical threshold 2 for netplots
   output$slider_PhChplot2<-renderUI(
-    if(input$calc=="cos"){
-      numericInput("PhCh_th1_2"," ",min=input$PhCh_th1_1, max=1,value=0.5,step=0.01)
-    } else{
-      numericInput("PhCh_th1_2"," ",min=input$PhCh_th1_1, max=NA,value=5,step=0.1)
-    }
+    numericInput("PhCh_th1_2"," ",min=input$PhCh_th1_1, max=1,value=0.5,step=0.01)
   )
   
   #Biological threshold 1 for netplots
   output$slider_Bioplot1<-renderUI(
-    if(input$calc=="cos"){
       numericInput("Bio_th1_1","",min=0,max=1,value=0.1,step=0.01)
-    } else{
-      numericInput("Bio_th1_1"," ",min=0,max=NA,value=3,step=0.1)
-    }
   )
   
   #Biological threshold 2 for netplots
   output$slider_Bioplot2<-renderUI(
-    if(input$calc=="cos"){
       numericInput("Bio_th1_2"," ",min=input$Bio_th1_1,max=1,value=0.5,step=0.01)
-    } else{
-      numericInput("Bio_th1_2"," ",min=input$Bio_th1_1,max=NA,value=5,step=0.1)
-    }
   )
   
   #Button
@@ -1033,24 +993,26 @@ server <- function(input, output) {
   
   descr<-reactive({
      if ((input$"Files_RA"=="Files2")){
-      raw1<-read.csv2("Descriptors_Data.csv",header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
+      raw1<-read.csv2("phChem_readAcross.csv",header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
     } else{
       if ((input$"only_one"==TRUE)&(input$"the_file"=="only_bio")){
         raw1<-pcorona()
       }else {
-        raw1<-read.csv2(input$descrRaw$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
-    }}
+        file<-read.csv2(input$descrRaw$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
+        raw1<-as.data.frame(t(file)) #for new format
+        }}
       raw1})
   
   pcorona<-reactive({
      if (input$"Files_RA"=="Files2"){
-      raw2<-read.csv2("Pcorona_Data.csv",header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
+      raw2<-read.csv2("bio_readAcross.csv",header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
     }else{
       if ((input$"only_one"==TRUE)&(input$"the_file"=="only_phchem")){
           raw2<-descr()
       }else{
-        raw2<-read.csv2(input$pcoronaRaw$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
-    }}
+        file<-read.csv2(input$pcoronaRaw$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
+        raw2<-as.data.frame(t(file)) #for new format
+        }}
       raw2})
 
   #Disable run button if files not uploaded 
@@ -1143,7 +1105,7 @@ server <- function(input, output) {
     if (input$Files_RA=="Files2" || input$only_one==FALSE){
       tot<-ncol(descr())
     } else {
-    if (input$the_file=="only_phchem"){#((is.null(input$descrRaw)==FALSE & input$descrRaw != "")){
+    if (input$the_file=="only_phchem"){
       tot<-ncol(descr())
     } else {
       tot<-ncol(pcorona())
@@ -1154,12 +1116,14 @@ server <- function(input, output) {
   nano_ID<-eventReactive(input$run_tr,{
     if (input$Files_RA=="Files2" || input$only_one==FALSE){
       nano_ID<-nanoID_crossval(descr())
+      #print(t(descr()[1,]))
+      #print(is.data.frame(descr()))
     } else{ 
-    if (input$the_file=="only_phchem"){#((is.null(input$descrRaw)==FALSE & input$descrRaw != "")){
-      nano_ID<-nanoID_crossval(descr())
-    } else {
-      nano_ID<-nanoID_crossval(pcorona())
-    }}
+      if (input$the_file=="only_phchem"){
+        nano_ID<-nanoID_crossval(descr())
+      } else {
+        nano_ID<-nanoID_crossval(pcorona())
+      }}
     nano_ID
     })
   
@@ -1225,19 +1189,11 @@ server <- function(input, output) {
       if (input$the_file=="only_phchem"){
         thr_phch<-input$PhCh_th
         base<-"PhChem"
-        if (input$calc=="cos"){
-          thr_biol<-0
-        } else {
-          thr_biol<-max(relBio)
-        }
+        thr_biol<-0
       } else{
         thr_biol<-input$Bio_th
         base<-"Bio"
-        if (input$calc=="cos"){
-          thr_phch<-0
-        } else {
-          thr_phch<-max(relDescr)
-        }
+        thr_phch<-0
       }
     }
    
@@ -1246,10 +1202,6 @@ server <- function(input, output) {
     
     for (ref in 1:total()){
       selectedData<-selData(thr_phch,thr_biol,input$calc,ref,relDescr,relBio,total(),nano_ID())
-      if (input$calc!="cos"){
-        selectedData[,"PhChem_corr"]<-1/(1+selectedData[,"PhChem_corr"])
-        selectedData[,"Bio_corr"]<-1/(1+selectedData[,"Bio_corr"])
-      }
       RAV<-RAVfun(base,selectedData,nano_ID())
       results_full[ref,1]<-nano_ID()[ref,1] #nano_number
       results_full[ref,2]<-nano_ID()[ref,2] #nano_name
@@ -1349,26 +1301,16 @@ server <- function(input, output) {
     if (input$the_file=="only_phchem"){
       PhCh1_1<-input$PhCh_th1_1
       PhCh1_2<-input$PhCh_th1_2
-      if (input$calc=="cos"){
-        Bio1_1<-0
-        Bio1_2<-0
-      } else {
-        Bio1_1<-max(relBio)
-        Bio1_2<-max(relBio)*2
-      }
+      Bio1_1<-0
+      Bio1_2<-0
     } else{
       Bio1_1<-input$Bio_th1_1
       Bio1_2<-input$Bio_th1_2
-      if (input$calc=="cos"){
-        PhCh1_1<-0
-        PhCh1_2<-0
-      } else {
-        PhCh1_1<-max(relDescr)
-        PhCh1_2<-max(relDescr)*2
-      }
+      PhCh1_1<-0
+      PhCh1_2<-0
     }
   }
-
+  
   selected<-nano_ID()
   range<-nrow(selected)
   id<-c()
@@ -1388,7 +1330,6 @@ server <- function(input, output) {
   f<-seq(from=0, to=2*pi, by=0.008*pi)
   
   links<-data.frame(stringsAsFactors = TRUE)
-  if (input$calc=="cos"){
     for (i in seq(1,range)){
       links[i,1]<-id[which(nodes$nano_number==input$ref)]
       links[i,2]<-paste("s0", i, sep="")
@@ -1419,40 +1360,7 @@ server <- function(input, output) {
         theta<-sample(f,1)
         l[i,1]<-rad*cos(theta)
         l[i,2]<-rad*sin(theta)
-      }}
-  } else {
-  for (i in seq(1,range)){
-    links[i,1]<-id[which(nodes$nano_number==input$ref)]
-    links[i,2]<-paste("s0", i, sep="")
-    links[i,3]<-"mention"   #type?
-    id_ref<-which(nodes$nano_number==input$ref)
-    NP<-nodes[i,2]
-    if (i==id_ref){ #color_of_nodes
-      links[i,4]<-"#FF3030"
-      l[i,1]<-0
-      l[i,2]<-0}
-    else if ((relDescr[input$ref,NP]<=PhCh1_1)&(relBio[input$ref,NP]<=Bio1_1)){
-      links[i,4]<-"#008B8B"
-      rad<-sample(r1,1)
-      theta<-sample(f,1)
-      l[i,1]<-rad*cos(theta)
-      l[i,2]<-rad*sin(theta)
-    }
-    else if ((relDescr[input$ref,NP]<=PhCh1_2)&(relDescr[input$ref,NP]>PhCh1_1)&(relBio[input$ref,NP]<=Bio1_2)&(relBio[input$ref,NP]>Bio1_1)) {
-      links[i,4]<-"#00CDCD"
-      rad<-sample(r2,1)
-      theta<-sample(f,1)
-      l[i,1]<-rad*cos(theta)
-      l[i,2]<-rad*sin(theta)
-    }
-    else {
-      links[i,4]<-"#C6E2FF"
-      rad<-sample(r3,1)
-      theta<-sample(f,1)
-      l[i,1]<-rad*cos(theta)
-      l[i,2]<-rad*sin(theta)
-    }
-  }
+      }
   }
   colnames(links)<-c("from", "to", "type","color")#,"groups")
   
@@ -1469,7 +1377,7 @@ server <- function(input, output) {
   }
   
   net <- graph.data.frame(links, nodes, directed=T)
- 
+    
   if (input$size){
     sz<-as.matrix(diametr())/2}
   else{
@@ -1525,38 +1433,22 @@ server <- function(input, output) {
   
   #Physicochemical threshold 1 for netplot
   output$slider_PhChplot1_p<-renderUI(
-    if(input$calc=="cos"){
       numericInput("PhCh_th1_1p","",min=0,max=1,value=0.1,step=0.01)
-    } else{
-      numericInput("PhCh_th1_1p","",min=0,max=NA,value=3,step=0.05)
-    }
   )
   
   #Physicochemical threshold 2 for netplot
   output$slider_PhChplot2_p<-renderUI(
-    if(input$calc=="cos"){
-      numericInput("PhCh_th1_2p","",min=input$PhCh_th1_1p,max=1,value=0.5,step=0.01)
-    } else{
-      numericInput("PhCh_th1_2p","",min=input$PhCh_th1_1p,max=NA,value=5,step=0.05)
-    }
+    numericInput("PhCh_th1_2p","",min=input$PhCh_th1_1p,max=1,value=0.5,step=0.01)
   )
   
   #Biological threshold 1 for netplot
   output$slider_Bioplot1_p<-renderUI(
-    if(input$calc=="cos"){
-      numericInput("Bio_th1_1p","",min=0,max=1,value=0.1,step=0.01)
-    } else{
-      numericInput("Bio_th1_1p","",min=0,max=NA,value=3,step=0.05)
-    }
+   numericInput("Bio_th1_1p","",min=0,max=1,value=0.1,step=0.01)
   )
   
   #Biological threshold 2 for netplot
   output$slider_Bioplot2_p<-renderUI(
-    if(input$calc=="cos"){
       numericInput("Bio_th1_2p","",min=input$Bio_th1_1p,max=1,value=0.5,step=0.01)
-    } else{
-      numericInput("Bio_th1_2p","",min=input$Bio_th1_1p,max=NA,value=5,step=0.05)
-    }
   )
   
   output$size_p<-renderUI({
@@ -1602,14 +1494,16 @@ server <- function(input, output) {
     if ((input$"only_one"==TRUE)&(input$"the_file"=="only_bio")){
       raw1<-descr()
     }else {
-    raw1<-read.csv2(input$descrRaw_p$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)}
+    raw1<-read.csv2(input$descrRaw_p$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
+    raw1<-as.data.frame(t(raw1))}#for new format
     raw1})
   
   pcorona_p<-reactive({
     if ((input$"only_one"==TRUE)&(input$"the_file"=="only_phchem")){
       raw2<-pcorona()
     }else{
-    raw2<-read.csv2(input$pcoronaRaw_p$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)}
+    raw2<-read.csv2(input$pcoronaRaw_p$datapath,header=TRUE,quote = "\"",dec=".", stringsAsFactors = TRUE,strip.white = TRUE,row.names=1)
+    raw2<-as.data.frame(t(raw2))}#for new format
   raw2})
   
   #Disable run button if files not uploaded and training not performed
@@ -1796,9 +1690,7 @@ server <- function(input, output) {
         #Differentially expressed proteins
         if (input$DEproteins==TRUE){
           DEproteins<-DEproteins()
-          #netcell<-pcorona[1,]
           DEproteins_common<-pcoronaPrediction_sc[which(rownames(pcoronaPrediction_sc)%in%DEproteins),]
-          #pcoronaPrediction_sc<-rbind(netcell,DEproteins_common)
           pcoronaPrediction_sc<-DEproteins_common
           }
         
@@ -1834,27 +1726,15 @@ server <- function(input, output) {
           if (input$the_file=="only_phchem"){
             thr_phch<-input$PhCh_th
             base<-"PhChem"
-            if (input$calc=="cos"){
-              thr_biol<-min(relBio_p)
-            } else {
-              thr_biol<-max(relBio_p)
-            }
+            thr_biol<-min(relBio_p)
           } else{
             thr_biol<-input$Bio_th
             base<-"Bio"
-            if (input$calc=="cos"){
-              thr_phch<-min(relDescr_p)
-            } else {
-              thr_phch<-max(relDescr_p)
-            }
+            thr_phch<-min(relDescr_p)
           }
         }
         
         selectedData<-selData(thr_phch,thr_biol,input$calc,1,relDescr_p,relBio_p,tot,IDs)
-        if (input$calc!="cos"){
-          selectedData[,"PhChem_corr"]<-1/(1+selectedData[,"PhChem_corr"])
-          selectedData[,"Bio_corr"]<-1/(1+selectedData[,"Bio_corr"])
-        }
         
         #Calculating Read Across Value
         if (base=="PhChem"){
@@ -1893,9 +1773,6 @@ server <- function(input, output) {
   })
   
   output$predTable<-renderDataTable({
-    #display_calc<-predCalc()
-    #display_calc[,3]<-round(x = display_calc[,3],digits = 6) #Display digits of RAV
-    #display_calc
     predCalc()
    })
   
@@ -2027,23 +1904,13 @@ server <- function(input, output) {
       if (input$the_file=="only_phchem"){
         PhCh1_1p<-input$PhCh_th1_1p
         PhCh1_2p<-input$PhCh_th1_2p
-        if (input$calc=="cos"){
-          Bio1_1p<-min(relBio_p)
-          Bio1_2p<-min(relBio_p)*2
-        } else {
-          Bio1_1p<-max(relBio_p)
-          Bio1_2p<-max(relBio_p)*2
-        }
+        Bio1_1p<-min(relBio_p)
+        Bio1_2p<-min(relBio_p)*2
       } else{
         Bio1_1p<-input$Bio_th1_1p
         Bio1_2p<-input$Bio_th1_2p
-        if (input$calc=="cos"){
-          PhCh1_1p<-min(relDescr_p)
-          PhCh1_2p<-min(relDescr_p)*2
-        } else {
-          PhCh1_1p<-max(relDescr_p)
-          PhCh1_2p<-max(relDescr_p)*2
-        }
+        PhCh1_1p<-min(relDescr_p)
+        PhCh1_2p<-min(relDescr_p)*2
       }
     }
     
@@ -2074,7 +1941,6 @@ server <- function(input, output) {
     l[1,1]<-0
     l[1,2]<-0
     #rest NPs of training set
-    if (input$calc=="cos"){
       for (i in seq(2,range)){
         links[i,1]<-id[1]
         links[i,2]<-paste("s0", i, sep="")
@@ -2102,35 +1968,7 @@ server <- function(input, output) {
           l[i,2]<-rad*sin(theta)
         }
       }
-    } else {
-    for (i in seq(2,range)){
-      links[i,1]<-id[1]
-      links[i,2]<-paste("s0", i, sep="")
-      links[i,3]<-"mention"   #type?
-      NP<-i
-      if ((relDescr_p[1,NP]<=PhCh1_1p)&(relBio_p[1,NP]<=Bio1_1p)){
-        links[i,4]<-"#008B8B"
-        rad<-sample(r1,1)
-        theta<-sample(f,1)
-        l[i,1]<-rad*cos(theta)
-        l[i,2]<-rad*sin(theta)
-      }
-      else if ((relDescr_p[1,NP]<=PhCh1_2p)&(relDescr_p[1,NP]>PhCh1_1p)&(relBio_p[1,NP]<=Bio1_2p)&(relBio_p[1,NP]>Bio1_1p)){
-        links[i,4]<-"#00CDCD"
-        rad<-sample(r2,1)
-        theta<-sample(f,1)
-        l[i,1]<-rad*cos(theta)
-        l[i,2]<-rad*sin(theta)
-      }
-      else {
-        links[i,4]<-"#C6E2FF"
-        rad<-sample(r3,1)
-        theta<-sample(f,1)
-        l[i,1]<-rad*cos(theta)
-        l[i,2]<-rad*sin(theta)
-      }
-    }}
-    colnames(links)<-c("from", "to", "type","color")
+    colnames(links)<-c("from", "to", "type","color")#,"groups")
     
     if (input$class_p){
       col<-c()
@@ -2155,8 +1993,9 @@ server <- function(input, output) {
     l<-as.matrix(l)
     plot1<-plot(net, vertex.color=links$color, vertex.label=V(net)$nano_name, vertex.label.cex=0.7,vertex.label.dist =0,
                 vertex.size=sz,vertex.frame.color="white",edge.color="white",vertex.label.family="Helvetica",vertex.label.color="black",edge.arrow.size=0.1,
-                edge.arrow.width=0.5,edge.label.cex=0.7, margin=c(1,1,1,1),rescale=F,layout = l*0.017)
-        if (input$class_p){
+                edge.arrow.width=0.5,edge.label.cex=0.7, margin=c(1,1,1,1),rescale=F,layout = l*0.017)#,
+    
+    if (input$class_p){
       legend("left",      # location of the legend on the heatmap plot
              legend = c(levels(categ()[,1])[1], levels(categ()[,1])[2]), # category labels
              col = c("#66CD00", "#8B2500"),  # color key
