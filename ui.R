@@ -44,7 +44,7 @@ ui <- (fluidPage(
           )
       ),
   
-      theme = shinytheme("Flatly"), navbarPage(p(strong("toxFlow"), style = "font-family: 'Agency FB'; Agency FB Bold"),
+      theme = shinytheme("flatly"), navbarPage(p(strong("toxFlow"), style = "font-family: 'Agency FB'; Agency FB Bold"), #footer =p("National Technical University of Athens", img(src="emp.png", align="center")),
                                                           
       #Tab 1
       tabPanel("GSVA",
@@ -61,7 +61,7 @@ ui <- (fluidPage(
                    
       tabsetPanel(type = "tabs",
                   #Files
-                  tabPanel("Input data",br(),
+                  tabPanel("Input data",br(), #h5("Please insert data"),
                        
                         #Files
                         selectInput("Files_gsva","Choose files", c("Import dataset"="Import_gsva",
@@ -70,6 +70,7 @@ ui <- (fluidPage(
                         uiOutput("Import_gsva_class"),
                         #Scaling?
                         checkboxInput("scaling","Scaling of raw data"),
+                        #Duplicated values?
                         selectInput("ids","Accession ID:", c("UNIPROT"="UNIPROT", "REFSEQ"="REFSEQ","ENTREZID"="ENTREZID","SYMBOL"="SYMBOL"))#,
                         ),
                   tabPanel("Parameters of analysis",br(),
@@ -100,7 +101,7 @@ ui <- (fluidPage(
      ),
                                                           
      #Tab 2
-     tabPanel("Read-across training", 
+     tabPanel("Read-across training", #Read across training \\using Leave-one-out cross-validation'
      sidebarLayout(
      #INPUTS
      div(id="Training_in",
@@ -115,7 +116,7 @@ ui <- (fluidPage(
                   
      tabsetPanel(type = "tabs", 
           #Files
-          tabPanel("Input data",br(),                   
+          tabPanel("Input data",br(), 
                    selectInput("Files_RA","Choose files", c("Import dataset"="Import_RA",
                                                                                 "Use demo dataset"="Files2")),
                           uiOutput("Import_RA_phChem"),
@@ -124,8 +125,8 @@ ui <- (fluidPage(
                    radioButtons("the_file","Available file:", c("Physicochemical file"="only_phchem","Biological file"="only_bio")),                   #Scaling
                    checkboxInput("scaling_descr","Scaling of physicochemical data"),
                    checkboxInput("scaling_bio","Scaling of biological data"),
-                   checkboxInput("DEproteins", "Use of differentially expressed genes or proteins from GSVA analysis")#,
-                   ), 
+                   checkboxInput("DEproteins", "Use of differentially expressed genes or proteins from GSVA analysis")
+                 ), 
           tabPanel("Parameters of analysis",br(), 
                 #Attribute filtering
                 sliderInput("lvl_phchem","Choose physicochemical attribute filtering level", min=0.05, max=0.7,value=0.05),
@@ -133,8 +134,8 @@ ui <- (fluidPage(
                 #Neighboring
                 selectInput("calc","Similarity calculation method:",choices = c("Cosine similarity"="cos","Manhattan distance"="manhattan","Euclidean distance"="euclidean"), multiple = FALSE),
                 #Thresholds
-                uiOutput("slider_PhCh"),
-                uiOutput("slider_Bio"),
+                numericInput("PhCh_th","Physicochemical threshold:",min=0,max=1,value=0.5,step=0.01),
+                numericInput("Bio_th","Biological threshold:",min=0,max=1,value=0.5,step=0.01),
                 #Calculation base
                 radioButtons("RAcorrBase","Prediction base on:", c("Physicochemical data"="PhChem","Biological data"="Bio")),
                 actionButton("run_tr","Training"), br(),
@@ -179,6 +180,7 @@ ui <- (fluidPage(
      #Files
      tags$div(title="Requiering .csv files. Columns must contain the NPs (or samples) and rows the markers (or genes).",fileInput("descrRaw_p","Physicochemical data:", accept = "text/csv")),
      tags$div(title="Requiering .csv files. Columns must contain the NPs (or samples) and rows the markers (or genes).",fileInput("pcoronaRaw_p","Biological data:", accept = "text/csv")),
+     #actionButton("refr3", "Reset form", icon = icon("refresh")),
      actionButton("run_pred","Prediction"),
      #Netplot
      h4("Nanoparticle's universe"),
