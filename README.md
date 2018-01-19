@@ -34,4 +34,4 @@ toxFlow  Copyright (C) 2017  Dimitra Danai Varsou
 If you find toxFlow useful please cite me! 
 
 Dimitra Danai Varsou. (2017, December 12). DemetraDanae/toxFlow: toxFlow Release 0.2.1 (Version v0.2.1). Supplement to:
-<a href="https://github.com/DemetraDanae/toxFlow/tree/v0.2.1"></a> Zenodo. <a href="http://doi.org/10.5281/zenodo.1107622"></a>
+https://github.com/DemetraDanae/toxFlow/tree/v0.2.1 Zenodo. http://doi.org/10.5281/zenodo.1107622
