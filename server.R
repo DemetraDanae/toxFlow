@@ -124,11 +124,10 @@ RAVfun<-function(RAcorrBase,selData,nano_ID){
   range<-nrow(selData)
   denom<-sum(selData[2:range,col]) #denominator
   for (i in 2:range){
-    #print(paste0("denominator:",denom,"i",i,"selData",selData[i,col],"nanoId:",nano_ID[selData$"nano_name"[i],3], "selDataNanoName", selData$"nano_name"[i],"\n"))
-    
+   
     RAV<-RAV+(selData[i,col]*nano_ID[selData[i,1],3])/denom
   }
-  #print(selData)
+ 
   return(RAV)
 }
 
@@ -161,7 +160,6 @@ selData<-function(PhCh_th,Bio_th,calc,ref,relDescr,relBio,total,nano_ID){
   return(selData)}
 
 #Gene Set Collections
-#setwd("./www")
 
 #1st Gene Set Collection
 mSigDB1 <- readLines("c5.mf.v5.1.entrez.gmt") #entrez id's
@@ -492,11 +490,8 @@ server <- function(input, output) {
     DEproteins<-annots$UNIPROT[which(annots$ENTREZID%in%X1.3)]
     
     DEproteins
-    #print(DEproteins)
   })
-  
-  #output$prot<-renderText({DEproteins()})
-  
+    
   #Constructing final table_________________________________________________________
   
   results<-eventReactive(input$run_gsva,{
@@ -1365,7 +1360,7 @@ server <- function(input, output) {
         l[i,1]<-rad*cos(theta)
         l[i,2]<-rad*sin(theta)
       }
-      else {#if ((relDescr[input$ref,NP]>input$PhCh_th1_2)&(relBio[input$ref,NP]>input$Bio_th1_2)){
+      else {
         links[i,4]<-"#C6E2FF"
         rad<-sample(r3,1)
         theta<-sample(f,1)
@@ -1373,7 +1368,7 @@ server <- function(input, output) {
         l[i,2]<-rad*sin(theta)
       }
   }
-  colnames(links)<-c("from", "to", "type","color")#,"groups")
+  colnames(links)<-c("from", "to", "type","color")
   
   if (input$class){
     col<-c()
@@ -1388,7 +1383,6 @@ server <- function(input, output) {
   }
   
   net <- graph.data.frame(links, nodes, directed=T)
-  #net <- simplify(net, remove.multiple = F, remove.loops = T)
   
   if (input$size){
     sz<-as.matrix(diametr())/2}
@@ -1400,9 +1394,7 @@ server <- function(input, output) {
   plot1<-plot(net, vertex.color=links$color, vertex.label=V(net)$nano_name, vertex.label.cex=0.7,vertex.label.dist =0,
               vertex.size=sz,vertex.frame.color="white",edge.color="white",vertex.label.family="Helvetica",vertex.label.color="black",edge.arrow.size=0.1,
               edge.arrow.width=0.5,edge.label.cex=0.7, margin=c(1,1,1,1),rescale=F,layout = l*0.017)#,
-  #title(main=paste(input$ref,nano_ID[input$ref,2]),cex.main=0.5)
-  #mark.groups=list(group, c(15:17)), mark.col=c("#C5E5E7","#ECD89A","#00CDCD"), mark.border=NA)
-  #par(mai=c(0.5,0.5,0.5,0.5))
+  
   if (input$class){
     legend("left",      # location of the legend on the heatmap plot
            legend = c(levels(categ()[,1])[1], levels(categ()[,1])[2]), # category labels
@@ -1704,9 +1696,9 @@ server <- function(input, output) {
         #Differentially expressed proteins
         if (input$DEproteins==TRUE){
           DEproteins<-DEproteins()
-          #netcell<-pcorona[1,]
+         
           DEproteins_common<-pcoronaPrediction_sc[which(rownames(pcoronaPrediction_sc)%in%DEproteins),]
-          #pcoronaPrediction_sc<-rbind(netcell,DEproteins_common)
+          
           pcoronaPrediction_sc<-DEproteins_common
           }
         
