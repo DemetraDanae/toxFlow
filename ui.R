@@ -79,9 +79,6 @@ ui <- (fluidPage(
                                                                                             icon("university", class = NULL, lib = "font-awesome"), "National Technical University of Athens (GR),", a("Unit of Process Control and Informatics",target="_blank",href="https://www.chemeng.ntua.gr/labs/control_lab/"))
                                                             )
                                                             ),
-                                                            #column(6, panel_div("danger", div(icon("glasses", class = NULL, lib = "font-awesome"),"About Apelles"), content =p("Appelles was a renowned painter of ancient Greece. Apelles was probably born at Colophon in Ionia and prospered during the 112th Olympiad (332-329 BC). Apelles allowed the superiority of some of his contemporaries: his portraits were exceptionally realistic, he was praised for his ingenuity and grace and, the simplicity and completeness of his works were remarkable. Apelles' paintings include: 'Alexander the Great wielding a thunderbolt', 'Aphrodite Anadyomene', the 'Calumny' etc. Several Italian Renaissance painters were inspired by him and repeated his subjects however, none of his paintings have survived to this day. Find more on", a("Wikipedia.", target="_blank", href="https://en.wikipedia.org/wiki/Apelles"))))
-                                                          #),  # end of fluidRow
-                                                          #fluidRow(
                                                             column(6, panel_div("danger", div(icon("cogs", class = NULL, lib = "font-awesome"),"Status"), p("Last update: February 25, 2020"))),
                                                             column(6, panel_div("success", div(icon("award", class = NULL, lib = "font-awesome"),"License"), p("This application is released under", a("GNU General Public License v.3", target="_blank", href="https://www.gnu.org/licenses/gpl-3.0.html"))))
                                                           )
@@ -101,10 +98,7 @@ ui <- (fluidPage(
       span(textOutput("instr1_2"), style="color:#6495ED"), 
       span(textOutput("instr1_3"), style="color:#6495ED"),br(),             
                    
-      #tabsetPanel(type = "tabs",
-                  #Files
-              #    tabPanel("Input data",br(), #h5("Please insert data"),
-                       
+                            
                         #Files
                         selectInput("Files_gsva","Choose files", c("Import dataset"="Import_gsva",
                                                                       "Use demo dataset"="Files1")),
@@ -115,15 +109,12 @@ ui <- (fluidPage(
                         #Duplicated values?
                         #checkboxInput("double","Average duplicate values"),
                         selectInput("ids","Accession ID:", c("UNIPROT"="UNIPROT", "REFSEQ"="REFSEQ","ENTREZID"="ENTREZID","SYMBOL"="SYMBOL")),
-                        #actionButton("refr1", "Reset form", icon = icon("refresh"))
-             #           ),
-            #      tabPanel("Parameters of analysis",br(),
+                        
                         #Gene Set Collection
                         selectInput("gsc","Gene set collection:", c("C5: GO MF gene sets (from MSigDB)"="c5",
                                                                        "Chemical-GO enriched associations (from Comparative Toxicogenomics Database)"="Tox","Other..."="Other")),
                         uiOutput("Other"),
                         #Gene limits
-                        #sliderInput("geneLimits","Gene set size:",min=1,max=10000,value=c(1,1000),step=1),
                         h5(strong("Gene set size:")),
                         fluidRow(
                         column(6,uiOutput("slider_geneLimits1")),
@@ -146,7 +137,7 @@ ui <- (fluidPage(
      ),
                                                           
      #Tab 2
-     tabPanel("Read-across training", #Read across training \\using Leave-one-out cross-validation'
+     tabPanel("Read-across training", 
      sidebarLayout(
      #INPUTS
      div(id="Training_in",
@@ -161,7 +152,7 @@ ui <- (fluidPage(
                   
      tabsetPanel(type = "tabs", 
           #Files
-          tabPanel("Input data",br(), #h5("Please insert data or use the demo dataset"),
+          tabPanel("Input data",br(), 
                    
                    #textOutput("instr1.2"),
                    selectInput("Files_RA","Choose files", c("Import dataset"="Import_RA",
@@ -173,7 +164,7 @@ ui <- (fluidPage(
                    checkboxInput("scaling_descr","Scaling of physicochemical data"),
                    checkboxInput("scaling_bio","Scaling of biological data"),
                    checkboxInput("DEproteins", "Use of differentially expressed genes or proteins from GSVA analysis")#,
-                   #actionButton("refr2", "Reset form", icon = icon("refresh"))
+                  
           ), 
           tabPanel("Parameters of analysis",br(), 
                 #Attribute filtering
@@ -237,7 +228,7 @@ ui <- (fluidPage(
      uiOutput("size_p"),
      checkboxInput("class_p","Nanoparticles' classification"),
      uiOutput("class_p"),
-     #numericInput("ref_p","Reference nanoparticle:",value=1,min=1,max=NA),
+    
      h5(strong("Physicochemical thresholds:")),
      fluidRow(
        column(6,tags$div(title="Adjusting color of neighbors in NP universe plot. 1st threshold specifies the closest neighbors and 2nd the middle neighbors.",uiOutput("slider_PhChplot1_p"))),
@@ -254,9 +245,6 @@ ui <- (fluidPage(
      h4(textOutput("PredTab")),dataTableOutput("predTable"), uiOutput("DownBut2"),
      h4(textOutput("NanoUniPred")),plotOutput("netAll_p"))
      ))
-)#,
-#tags$footer(span(HTML('<footer>
-#                      <img src="http://si.ntua.gr/pyrforos-digamma.png", height="80", width="80"</img>
-#                      </footer>'), align="center"), p(a("Unit of Process Control and Informatics",target="_blank",href="http://www.chemeng.ntua.gr/labs/control_lab/"),br(),"School of Chemical Engineering", br(),"National Technical University of Athens"), align="center")#,br(),"toxFlow Copyright", icon("copyright"), "2017  Dimitra Danai Varsou", align="center")
+)
 )
 )
