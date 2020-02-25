@@ -9,6 +9,8 @@ You can find a video tutorial on <a href="https://www.youtube.com/watch?v=kGp2Pu
 
 doi: <a href="https://doi.org/10.5281/zenodo.836713"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.595814.svg" alt="DOI"></a>
 
+You can find the toxflow docker image here: https://hub.docker.com/repository/docker/demetradanae/toxflow
+
 # License
 This application is released under <a href="https://www.gnu.org/licenses/gpl.html"> GNU General Public License v.3</a>. 
 ```html
@@ -31,7 +33,7 @@ If you find toxFlow useful, please cite me! :)
 Dimitra Danai Varsou. (2017, December 12). DemetraDanae/toxFlow: toxFlow Release 0.2.1 (Version v0.2.1). Supplement to:
 https://github.com/DemetraDanae/toxFlow/tree/v0.2.1 Zenodo. http://doi.org/10.5281/zenodo.1107622
 
-# Updates
+# Updates in toxFlow
 Feb 19, 2020
 
 -Deletion of "Help" tab and addition of landing page
