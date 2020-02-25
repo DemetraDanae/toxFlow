@@ -106,8 +106,7 @@ ui <- (fluidPage(
                         uiOutput("Import_gsva_class"),
                         #Scaling?
                         checkboxInput("scaling","Scaling of raw data"),
-                        #Duplicated values?
-                        #checkboxInput("double","Average duplicate values"),
+                      
                         selectInput("ids","Accession ID:", c("UNIPROT"="UNIPROT", "REFSEQ"="REFSEQ","ENTREZID"="ENTREZID","SYMBOL"="SYMBOL")),
                         
                         #Gene Set Collection
@@ -131,7 +130,7 @@ ui <- (fluidPage(
      mainPanel(uiOutput("image1"),
      h4(textOutput("resultsText")),dataTableOutput("resultsTable_gsva"), uiOutput("DownGSVA"), br(),
      h4(textOutput("heatmapText")),plotOutput("heatmap"),uiOutput("DownHeat"),br(),
-     #textOutput("prot"),
+     
      h4(textOutput("GOgraphText")),plotOutput("GOGraph"),uiOutput("DownGOgraph"))
      )
      ),
@@ -153,8 +152,7 @@ ui <- (fluidPage(
      tabsetPanel(type = "tabs", 
           #Files
           tabPanel("Input data",br(), 
-                   
-                   #textOutput("instr1.2"),
+              
                    selectInput("Files_RA","Choose files", c("Import dataset"="Import_RA",
                                                                                 "Use demo dataset"="Files2")),
                           uiOutput("Import_RA_phChem"),
@@ -219,7 +217,7 @@ ui <- (fluidPage(
      #Files
      tags$div(title="Requiering .csv files. Columns must contain the NPs (or samples) and rows the markers (or genes).",fileInput("descrRaw_p","Physicochemical data:", accept = "text/csv")),
      tags$div(title="Requiering .csv files. Columns must contain the NPs (or samples) and rows the markers (or genes).",fileInput("pcoronaRaw_p","Biological data:", accept = "text/csv")),
-     #actionButton("refr3", "Reset form", icon = icon("refresh")),
+   
      actionButton("run_pred","Prediction"),
      #Netplot
      h4("Nanoparticle's universe"),
