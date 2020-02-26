@@ -9,7 +9,7 @@ You can find a video tutorial on <a href="https://www.youtube.com/watch?v=kGp2Pu
 
 doi: <a href="https://doi.org/10.5281/zenodo.836713"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.595814.svg" alt="DOI"></a>
 
-You can find the toxflow docker image here: https://hub.docker.com/repository/docker/demetradanae/toxflow
+You can find the toxflow docker image here: https://hub.docker.com/r/demetradanae/toxflow
 
 # License
 This application is released under <a href="https://www.gnu.org/licenses/gpl.html"> GNU General Public License v.3</a>. 
