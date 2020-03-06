@@ -3,7 +3,7 @@ R code for toxFlow application. toxFlow is a Shiny application that was build un
 
 toxFlow is an application of web tools for Gene Set Variation Analysis (GSVA) and toxicity prediction using read across technique. toxFlow is developed as a project for my Diploma Thesis, in School of Chemical Engineering (National Technical University of Athens, March-September 2016). Additional information about the employed methods and an detailed case study, can be found in the corresponding <a href="https://pubs.acs.org/doi/pdfplus/10.1021/acs.jcim.7b00160">publication</a>; Varsou DD, Tsiliki G, Nymark P, Kohonen P, Grafström R, and Sarimveis H, <i> toxFlow: A Web-Based Application for Read-Across Toxicity Prediction Using Omics and Physicochemical Data</i>, J. Chem. Inf. Model.
 
-This application is hosted in the server of Unit of Process Control & Informatics of School of Chemical Engineering (NTUA), in the following <a href="https://toxflow.jaqpot.org/"> https://toxflow.jaqpot.org/ </a>. 
+This application is hosted in the server of Unit of Process Control & Informatics of School of Chemical Engineering (NTUA), in the following link <a href="https://toxflow.jaqpot.org/"> https://toxflow.jaqpot.org/ </a>. 
 
 You can find a video tutorial on <a href="https://www.youtube.com/watch?v=kGp2PuTiDrg"> YouTube</a>
 
