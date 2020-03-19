@@ -30,8 +30,8 @@ If not, see here: http://www.gnu.org/licenses/.
 # Cite as
 If you find toxFlow useful, please cite me! :)
 
-Dimitra Danai Varsou. (2017, December 12). DemetraDanae/toxFlow: toxFlow Release 0.2.1 (Version v0.2.1). Supplement to:
-https://github.com/DemetraDanae/toxFlow/tree/v0.2.1 Zenodo. http://doi.org/10.5281/zenodo.1107622
+Dimitra Danai Varsou. (2020, March 19). DemetraDanae/toxFlow: toxFlow Release 1.0.0 (Version v1.0.0). Supplement to:
+https://github.com/DemetraDanae/toxFlow/tree/v1.0.0 Zenodo. https://zenodo.org/badge/latestdoi/68043137
 
 # Updates in toxFlow
 Feb 19, 2020
