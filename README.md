@@ -16,6 +16,8 @@ This application is released under <a href="https://www.gnu.org/licenses/gpl.htm
 ```html
 toxFlow GSVA-Read across web tools
 
+Copyright (C) 2017 Dimitra-Danai Varsou
+
 This program is free software: you can redistribute it and/or modify it under the terms 
 of the GNU General Public License as published by the Free Software Foundation, either 
 version 3 of the License, or (at your option) any later version.
